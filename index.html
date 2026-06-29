@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeautyDerm — Beauty Plans · Guía de Ventas</title>
+<style>
+:root {
+  --navy: #1A1A2E;
+  --purple: #5C6BC0;
+  --teal: #00838F;
+  --green-dark: #2E7D32;
+  --violet: #7B1FA2;
+  --rose: #C2185B;
+  --gold: #F9A825;
+  --bg: #F4F5F8;
+  --card: #FFFFFF;
+  --text: #263238;
+  --muted: #78909C;
+  --ef-bg: #E8F5E9; --ef-c: #1B5E20;
+  --t10-bg: #FFF9C4; --t10-c: #7B4800;
+  --t20-bg: #FFE0B2; --t20-c: #BF360C;
+  --tip-bg: #EDE7F6; --tip-c: #4527A0;
+  --obj-bg: #FBE9E7; --obj-c: #BF360C;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--navy);
+  color: white;
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,.3);
+}
+.header-left h1 { font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
+.header-left p { font-size: 12px; color: #90CAF9; margin-top: 2px; }
+.header-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+  color: white; padding: 5px 14px; border-radius: 20px; font-size: 12px;
+  cursor: pointer; transition: all .2s;
+}
+.pill:hover, .pill.active { background: white; color: var(--navy); }
+
+/* ── LEYENDA ── */
+.leyenda {
+  background: #3949AB; color: white;
+  padding: 8px 32px; font-size: 12px;
+  display: flex; gap: 24px; flex-wrap: wrap; align-items: center;
+}
+.ley-item { display: flex; align-items: center; gap: 6px; }
+.ley-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+/* ── CONTENT ── */
+.content { padding: 24px 32px; max-width: 1600px; margin: 0 auto; }
+
+/* ── SEARCH ── */
+.search-bar {
+  margin-bottom: 20px;
+  display: flex; gap: 12px; align-items: center;
+}
+.search-bar input {
+  flex: 1; padding: 10px 16px; border: 1px solid #CFD8DC;
+  border-radius: 8px; font-size: 14px; background: white;
+  outline: none;
+}
+.search-bar input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(92,107,192,.15); }
+
+/* ── GROUP HEADER ── */
+.group-header {
+  color: white; font-weight: 700; font-size: 15px;
+  padding: 10px 20px; border-radius: 8px;
+  margin: 28px 0 14px;
+  letter-spacing: .3px;
+}
+
+/* ── GRID ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.05);
+  display: flex; flex-direction: column;
+  transition: transform .15s, box-shadow .15s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.12), 0 8px 28px rgba(0,0,0,.08);
+}
+.card.hidden { display: none; }
+
+/* Card header */
+.card-header {
+  padding: 14px 16px 10px;
+  background: #FAFBFC;
+  border-bottom: 1px solid #ECEFF1;
+}
+.card-title {
+  font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.3;
+}
+.badge-star {
+  display: inline-block; margin-left: 8px;
+  background: var(--gold); color: #333; font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 10px; vertical-align: middle;
+}
+.lista-price {
+  font-size: 12px; color: var(--muted); margin-top: 4px;
+  text-decoration: line-through;
+}
+
+/* Tratamientos */
+.trats-block { padding: 10px 16px; border-bottom: 1px solid #ECEFF1; }
+.trat-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 8px; padding: 3px 0; font-size: 12px;
+}
+.trat-name { color: #546E7A; flex: 1; }
+.trat-price { font-weight: 600; color: var(--text); white-space: nowrap; font-size: 13px; }
+
+/* Prices */
+.prices-block { padding: 10px 16px; display: flex; flex-direction: column; gap: 6px; }
+.price-row {
+  border-radius: 8px; padding: 8px 12px;
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 8px;
+}
+.price-row.efectivo { background: var(--ef-bg); }
+.price-row.tarjeta  { background: var(--t10-bg); }
+.price-row.t20      { background: var(--t20-bg); }
+.price-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .5px;
+  text-transform: uppercase; white-space: nowrap;
+}
+.efectivo .price-label { color: var(--ef-c); }
+.tarjeta  .price-label { color: var(--t10-c); }
+.t20      .price-label { color: var(--t20-c); }
+.price-value {
+  font-size: 18px; font-weight: 800; text-align: right;
+}
+.efectivo .price-value { color: var(--ef-c); }
+.tarjeta  .price-value { color: var(--t10-c); }
+.t20      .price-value { color: var(--t20-c); }
+.price-cuota {
+  font-size: 11px; color: var(--muted); white-space: nowrap;
+  background: rgba(0,0,0,.06); padding: 2px 8px; border-radius: 10px;
+}
+
+/* Tip */
+.tip-block {
+  margin: 0 12px 8px;
+  background: var(--tip-bg);
+  border-radius: 8px; padding: 10px 12px;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.tip-icon { font-size: 16px; flex-shrink: 0; line-height: 1.4; }
+.tip-text { font-size: 12px; color: var(--tip-c); line-height: 1.5; }
+
+/* Objeción */
+.obj-block {
+  margin: 0 12px 14px;
+  background: var(--obj-bg);
+  border-radius: 8px; padding: 10px 12px;
+}
+.obj-label {
+  font-size: 10px; font-weight: 700; color: var(--obj-c);
+  letter-spacing: .4px; text-transform: uppercase; margin-bottom: 4px;
+}
+.obj-text { font-size: 12px; color: #5D4037; line-height: 1.5; }
+
+/* ── PITCH SECTION ── */
+#pitch-section { display: none; }
+.pitch-hero {
+  background: linear-gradient(135deg, #1A1A2E 0%, #3949AB 60%, #C2185B 100%);
+  border-radius: 16px; padding: 40px 48px; margin-bottom: 28px;
+  text-align: center; color: white;
+}
+.pitch-hero-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: #F48FB1; margin-bottom: 12px;
+}
+.pitch-hero h2 {
+  font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 16px;
+  text-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+.pitch-hero h2 span { color: #FFD54F; }
+.pitch-hero p { font-size: 16px; color: #E3F2FD; line-height: 1.6; max-width: 680px; margin: 0 auto; }
+
+.pitch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+@media (max-width: 768px) { .pitch-grid { grid-template-columns: 1fr; } .pitch-hero { padding: 28px 20px; } .pitch-hero h2 { font-size: 24px; } }
+
+.pitch-card {
+  background: white; border-radius: 14px; padding: 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+}
+.pitch-card-icon { font-size: 32px; margin-bottom: 12px; }
+.pitch-card h3 { font-size: 16px; font-weight: 700; color: #1A1A2E; margin-bottom: 10px; }
+.pitch-card p, .pitch-card li { font-size: 14px; color: #546E7A; line-height: 1.65; }
+.pitch-card ul { padding-left: 18px; }
+.pitch-card ul li { margin-bottom: 6px; }
+.pitch-card.accent-rose { border-top: 4px solid #C2185B; }
+.pitch-card.accent-blue { border-top: 4px solid #3949AB; }
+.pitch-card.accent-gold { border-top: 4px solid #F9A825; }
+.pitch-card.accent-teal { border-top: 4px solid #00838F; }
+
+.stat-row { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.stat-box {
+  flex: 1; min-width: 120px; background: #F4F5F8; border-radius: 10px;
+  padding: 14px 16px; text-align: center;
+}
+.stat-num { font-size: 26px; font-weight: 800; color: #C2185B; line-height: 1; }
+.stat-label { font-size: 11px; color: #78909C; margin-top: 4px; }
+
+.pitch-quote {
+  background: linear-gradient(135deg, #EDE7F6, #FCE4EC);
+  border-radius: 14px; padding: 28px 32px; margin-bottom: 28px;
+  border-left: 5px solid #C2185B; font-size: 15px; line-height: 1.7;
+  color: #3E2723; font-style: italic;
+}
+.pitch-quote strong { color: #C2185B; font-style: normal; }
+
+.math-box {
+  background: #1A1A2E; color: white; border-radius: 14px;
+  padding: 28px 32px; margin-bottom: 28px;
+}
+.math-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #FFD54F; }
+.math-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.1);
+  font-size: 14px;
+}
+.math-row:last-child { border-bottom: none; font-size: 16px; font-weight: 700; padding-top: 16px; }
+.math-row span:last-child { color: #FFD54F; font-weight: 700; }
+.math-row.total span:last-child { color: #69F0AE; font-size: 20px; }
+
+.steps-list { counter-reset: steps; list-style: none; padding: 0; }
+.steps-list li {
+  counter-increment: steps; display: flex; gap: 16px; align-items: flex-start;
+  margin-bottom: 20px;
+}
+.steps-list li::before {
+  content: counter(steps);
+  background: #C2185B; color: white; font-weight: 800; font-size: 14px;
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.step-body strong { display: block; font-size: 14px; color: #1A1A2E; margin-bottom: 4px; }
+.step-body span { font-size: 13px; color: #546E7A; line-height: 1.5; }
+
+.pitch-cta {
+  background: linear-gradient(135deg, #C2185B, #880E4F);
+  color: white; border-radius: 14px; padding: 32px; text-align: center;
+  margin-bottom: 8px;
+}
+.pitch-cta h3 { font-size: 22px; font-weight: 800; margin-bottom: 12px; }
+.pitch-cta p { font-size: 15px; color: #FCE4EC; line-height: 1.6; max-width: 560px; margin: 0 auto; }
+
+/* Footer */
+.site-footer {
+  text-align: center; padding: 24px; color: var(--muted); font-size: 11px;
+  border-top: 1px solid #ECEFF1; margin-top: 40px;
+}
+
+@media (max-width: 640px) {
+  .content { padding: 16px; }
+  .grid { grid-template-columns: 1fr; }
+  .site-header { padding: 14px 16px; }
+  .leyenda { padding: 8px 16px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-left">
+    <h1>BeautyDerm · Beauty Plans</h1>
+    <p>Guía de Ventas para Recepción · Actualizado 26/06/2026</p>
+  </div>
+  <div class="header-pills">
+    <span class="pill active" onclick="filterAll(this)">Todos (27)</span>
+    <span class="pill" onclick="filterGrp('2svc',this)">2 Servicios (10)</span>
+    <span class="pill" onclick="filterGrp('3svc',this)">3 Servicios (5)</span>
+    <span class="pill" onclick="filterGrp('co2',this)">Tecnología (5)</span>
+    <span class="pill" onclick="filterGrp('new',this)">Nuevos (7)</span>
+    <span class="pill" onclick="showPitch(this)" style="background:rgba(194,24,91,.3);border-color:rgba(194,24,91,.6)">🎯 Guía de Ventas</span>
+  </div>
+</header>
+
+<div class="leyenda">
+  <span class="ley-item"><span class="ley-dot" style="background:#1B5E20"></span>Efectivo: −30%</span>
+  <span class="ley-item"><span class="ley-dot" style="background:#7B4800"></span>Tarjeta: −10% + 6 cuotas sin interés</span>
+  <span class="ley-item"><span class="ley-dot" style="background:#BF360C"></span>Tarjeta −20%: exclusivo Combo Bótox x3 ★</span>
+  <span class="ley-item">💡 Tip comercial · 🎯 Manejo de objeción</span>
+</div>
+
+<div class="content">
+  <div class="search-bar" id="search-bar-wrap">
+    <input type="text" id="searchInput" placeholder="Buscar plan..." oninput="searchCards(this.value)">
+  </div>
+
+  <!-- ══════════ PITCH SECTION ══════════ -->
+  <div id="pitch-section">
+
+    <div class="pitch-hero">
+      <div class="pitch-hero-eyebrow">📣 Motivación de equipo · BeautyDerm</div>
+      <h2>Chicas, los planes no son<br><span>un imposible.</span><br>Ya están pasando.</h2>
+      <p>La clínica ya tiene el tráfico. Ya tiene los pacientes. Ya tiene los tratamientos. Lo único que hace falta es que nosotras empujemos un poquito más en el momento justo. Esto no es vender — es ayudarle a la paciente a aprovechar lo que ya necesita.</p>
+    </div>
+
+    <div class="pitch-quote">
+      "No les estamos pidiendo que salgan a buscar clientes nuevos. Les estamos pidiendo que, de cada 10 pacientes que ya entran por la puerta, <strong>conviertan 1 en plan</strong>. Eso es todo. Con eso ya llegamos al mínimo y ya comisionan."
+    </div>
+
+    <div style="background:#C2185B;color:white;border-radius:12px;padding:16px 24px;margin-bottom:28px;display:flex;align-items:center;gap:16px;">
+      <div style="font-size:28px;">🔑</div>
+      <div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:4px;">Regla de oro: mínimo 10 planes por mes para comisionar.</div>
+        <div style="font-size:13px;color:#FCE4EC;line-height:1.5;">Por debajo de 10 no hay comisión, aunque hayas vendido 9. A partir de 10, se liquida el 4% sobre cada uno de los planes del mes. No es por plan suelto — es el equipo completo de la meta mensual individual.</div>
+      </div>
+    </div>
+
+    <div class="pitch-grid">
+
+      <div class="pitch-card accent-rose">
+        <div class="pitch-card-icon">📊</div>
+        <h3>La matemática real</h3>
+        <p>No lo imaginamos — lo calculamos sobre los 27 planes del catálogo actual.</p>
+        <div class="stat-row">
+          <div class="stat-box">
+            <div class="stat-num">$649K</div>
+            <div class="stat-label">ticket promedio efectivo</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">$26K</div>
+            <div class="stat-label">comisión por plan (4%)</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box">
+            <div class="stat-num">10</div>
+            <div class="stat-label">planes = +$260K/mes</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">20</div>
+            <div class="stat-label">planes = +$520K/mes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pitch-card accent-blue">
+        <div class="pitch-card-icon">🎯</div>
+        <h3>¿Es realmente posible?</h3>
+        <p>Sí. Y acá está el porqué:</p>
+        <ul>
+          <li>Si la clínica recibe <strong>5 pacientes por día</strong>, eso es ~110 pacientes al mes.</li>
+          <li>Para llegar al mínimo necesitamos convertir <strong>1 de cada 11</strong>.</li>
+          <li>Si son 10 pacientes/día, necesitamos <strong>1 de cada 22</strong>.</li>
+          <li>En una consulta donde ya se habló de 2 tratamientos, ofrecer el plan es una conversación de <strong>30 segundos</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="pitch-card accent-gold">
+        <div class="pitch-card-icon">💡</div>
+        <h3>¿Cuándo abrir la conversación?</h3>
+        <ul>
+          <li>Cuando la médica propone 2 o más tratamientos en la misma consulta.</li>
+          <li>Cuando la paciente pregunta "¿qué más podría hacerme?"</li>
+          <li>Cuando paga un tratamiento y pregunta por el siguiente turno.</li>
+          <li>Cuando una paciente vuelve por segunda vez en 3 meses.</li>
+          <li>Cuando la médica deja una indicación de seguimiento.</li>
+        </ul>
+      </div>
+
+      <div class="pitch-card accent-teal">
+        <div class="pitch-card-icon">🗣️</div>
+        <h3>Cómo arrancar la conversación</h3>
+        <p>No lo vendas como descuento. Vendelo como protocolo:</p>
+        <ul>
+          <li><strong>"La dra. me indicó que tu protocolo incluye X e Y..."</strong></li>
+          <li><strong>"Tenemos un plan que combina exactamente eso con un descuento de hasta el 30%..."</strong></li>
+          <li><strong>"¿Preferís abonarlo en cuotas o en efectivo?"</strong></li>
+        </ul>
+        <p style="margin-top:10px;font-size:13px;">Cerrá siempre con una pregunta de elección — nunca con "¿querés o no?"</p>
+      </div>
+
+    </div>
+
+    <div class="math-box">
+      <h3>💰 ¿Cuánto más podés ganar? · Tu sueldo se incrementa...</h3>
+      <div class="math-row">
+        <span>Nivel mínimo · 10 planes / mes</span>
+        <span>+20% sobre tu sueldo base</span>
+      </div>
+      <div class="math-row">
+        <span>Nivel objetivo · 20 planes / mes</span>
+        <span>+35% sobre tu sueldo base</span>
+      </div>
+      <div class="math-row">
+        <span>Nivel aspiracional · 30 planes / mes</span>
+        <span>+50% sobre tu sueldo base</span>
+      </div>
+      <div class="math-row total">
+        <span>Comisión por plan (4% sobre precio efectivo)</span>
+        <span>~$26.000 c/u</span>
+      </div>
+      <div style="margin-top:16px;padding:14px 16px;background:rgba(255,255,255,.08);border-radius:10px;font-size:13px;color:#B0BEC5;line-height:1.6;">
+        ⚠️ <strong style="color:#FFD54F;">Estos porcentajes son un estimativo mínimo</strong>, calculados sobre el ticket promedio del catálogo ($649.000 efectivo). Si vendés planes de mayor valor — Sculptra, Profhilo, combos de 3 servicios — la comisión por plan sube a $38.000–$48.000 y los porcentajes de incremento salarial son aún mayores. Cuanto más caro el plan, más ganás vos también.
+      </div>
+    </div>
+
+    <div class="pitch-grid">
+      <div class="pitch-card accent-rose" style="grid-column: 1 / -1;">
+        <div class="pitch-card-icon">🚀</div>
+        <h3>Los 5 pasos del proceso</h3>
+        <ol class="steps-list">
+          <li>
+            <div class="step-body">
+              <strong>La médica propone el protocolo</strong>
+              <span>Ella diseña el plan. Vos solo necesitás escuchar qué tratamientos indicó para saber qué plan del catálogo se lo lleva.</span>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <strong>Abrís el catálogo y buscás el plan</strong>
+              <span>Usá esta misma herramienta. En segundos encontrás el combo exacto, el precio con descuento y el valor de cada cuota.</span>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <strong>Presentás las opciones de pago</strong>
+              <span>"Podés pagarlo en efectivo con 30% off, o en 6 cuotas sin interés con tarjeta." Mostrá los números — que los vea.</span>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <strong>Emitís el presupuesto en Reservo con tu nombre</strong>
+              <span>Ese es tu registro de venta. Sin el ID en Reservo no hay comisión — es la única regla que no tiene excepción.</span>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <strong>Imprimís, firmás con la paciente y archivás</strong>
+              <span>30 segundos más y listo. La paciente se va con su plan armado y vos con tu comisión asegurada.</span>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="pitch-cta">
+      <h3>Esto no es un favor — es plata tuya sobre la mesa.</h3>
+      <p>Ya tenemos los planes armados. Ya tenemos los precios. Ya tenemos las pacientes. La única variable que falta sos vos diciéndolo en el momento justo. No hay que inventar nada — hay que aprovechar lo que ya existe.</p>
+    </div>
+
+  </div>
+  <!-- ══════════ FIN PITCH ══════════ -->
+
+  <div class="group-header" style="background:#5C6BC0;border-left:6px solid #E8EAF6">Planes de 2 Servicios</div>
+<div class="grid">
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">Labios + Toxina</div>
+    <div class="lista-price">Precio lista: $793.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Aumento de Labios</span><span class="trat-price">$383.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$555.100</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$713.700</div>
+      <div class="price-cuota">$118.950 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">El combo más vendido. Volumen y relajación muscular actúan en sinergia: los labios lucen más definidos y naturales porque la toxina elimina las líneas que los enmarcan.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Es muy caro para dos cosas.' → Hacerlos separados son $793.000. Hoy los llevás juntos por $713.700 en tarjeta — ahorrás $79.300 de entrada.</div>
+  </div>
+</div>
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">Sculptra + Toxina</div>
+    <div class="lista-price">Precio lista: $1.180.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Sculptra 1 vial</span><span class="trat-price">$770.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$826.000</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.062.000</div>
+      <div class="price-cuota">$177.000 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Sculptra estimula colágeno propio durante meses. La toxina actúa de inmediato. Le explicás a la paciente que va a verse mejor hoy Y en 3 meses — no es lo mismo que hacer solo uno.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Lo pienso.' → El Sculptra tiene lista de espera y el precio no baja. Hoy lo cierra en $1.062.000 con 6 cuotas de $177.000.</div>
+  </div>
+</div>
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">Profhilo + Sculptra</div>
+    <div class="lista-price">Precio lista: $1.360.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Profhilo</span><span class="trat-price">$590.000</span></div><div class="trat-row"><span class="trat-name">Sculptra 1 vial</span><span class="trat-price">$770.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$952.000</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.224.000</div>
+      <div class="price-cuota">$204.000 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Combo de bioestimulación avanzada. Profhilo hidrata desde adentro, Sculptra reconstruye estructura. Para pacientes que ya conocen los productos y buscan el siguiente nivel.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Es mucho dinero.' → Profhilo solo cuesta $383.000. Con este plan se lleva Sculptra $770.000 casi de bonus. El diferencial es mínimo para el resultado que obtiene.</div>
+  </div>
+</div>
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">Relleno Ojeras + Toxina</div>
+    <div class="lista-price">Precio lista: $831.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Relleno Ojeras</span><span class="trat-price">$421.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$581.700</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$747.900</div>
+      <div class="price-cuota">$124.650 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Las ojeras son la queja número 1 de aspecto cansado. Combinadas con toxina para líneas del contorno periocular, el rejuvenecimiento de la zona es total y se nota en 48 hs.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'No sé si quiero hacer tanto.' → Son dos zonas que se complementan. La toxina evita que las arrugas 'compitan' con el relleno. El resultado sin toxina es la mitad de bueno.</div>
+  </div>
+</div>
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">Profhilo + Toxina</div>
+    <div class="lista-price">Precio lista: $1.000.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Profhilo</span><span class="trat-price">$590.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$700.000</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$900.000</div>
+      <div class="price-cuota">$150.000 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Textura + expresión en una sola sesión. Ideal para pacientes nuevas: ven resultados inmediatos (toxina) y progresivos (Profhilo). Genera confianza y retorno.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿En qué se nota primero?' → La toxina en 5-7 días, Profhilo en 4 semanas. Le pedís que saque turno de control para ver la evolución — así fidelizás la visita siguiente.</div>
+  </div>
+</div>
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">Labios + Proyección Mentón</div>
+    <div class="lista-price">Precio lista: $782.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Aumento de Labios</span><span class="trat-price">$383.000</span></div><div class="trat-row"><span class="trat-name">Proyección Mentón 1 vial</span><span class="trat-price">$399.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$547.400</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$703.800</div>
+      <div class="price-cuota">$117.300 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Armonización del tercio inferior. El mentón proyectado equilibra el volumen de los labios — sin eso, los labios se ven desproporcionados. Es la explicación que cierra esta venta.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Solo quería hacer los labios.' → Mostrá un simulador o foto de resultado: los labios solos sin mentón pueden verse artificiales. El combo da el balance que buscan.</div>
+  </div>
+</div>
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">Proyección Mentón + Toxina</div>
+    <div class="lista-price">Precio lista: $809.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Proyección Mentón 1 vial</span><span class="trat-price">$399.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$566.300</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$728.100</div>
+      <div class="price-cuota">$121.350 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Define el perfil y relaja la zona superior. Muy pedido por pacientes que quieren una estructura facial más marcada sin cirugía. Clave: mostrar el cambio de perfil.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Se nota mucho?' → Sutil pero transformador. Le mostrás resultados de perfil — el mentón proyectado cambia toda la lectura del rostro sin que 'se vea que se hizo algo'.</div>
+  </div>
+</div>
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">HArmonyCA + Labios</div>
+    <div class="lista-price">Precio lista: $753.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">HArmonyCA 1 vial</span><span class="trat-price">$370.000</span></div><div class="trat-row"><span class="trat-name">Aumento de Labios</span><span class="trat-price">$383.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$527.100</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$677.700</div>
+      <div class="price-cuota">$112.950 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">HArmonyCA bioestimula la piel mientras los labios toman volumen. Los resultados son progresivos — la paciente vuelve al mes y nota la diferencia. Genera segunda visita naturalmente.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Cuánto dura?' → El volumen de labios 6-12 meses, el efecto bioestimulador de HArmonyCA hasta 18 meses. Es una de las inversiones con mayor duración por peso.</div>
+  </div>
+</div>
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">Radiesse + Toxina</div>
+    <div class="lista-price">Precio lista: $879.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Radiesse</span><span class="trat-price">$469.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$615.300</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$791.100</div>
+      <div class="price-cuota">$131.850 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Radiesse no es solo relleno: estimula colágeno propio. La toxina potencia eso relajando la musculatura que 'lucha' contra los fillers. Explicarlo así cambia la percepción de precio.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Por qué Radiesse y no algo más barato?' → Porque Radiesse te da relleno inmediato + colágeno propio por 12-18 meses. Es la opción más eficiente a largo plazo.</div>
+  </div>
+</div>
+<div class="card" data-grp="2svc">
+  <div class="card-header" style="border-left:5px solid #5C6BC0">
+    <div class="card-title">HArmonyCA + Proyección Mentón</div>
+    <div class="lista-price">Precio lista: $769.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">HArmonyCA 1 vial</span><span class="trat-price">$370.000</span></div><div class="trat-row"><span class="trat-name">Proyección Mentón 1 vial</span><span class="trat-price">$399.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$538.300</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$692.100</div>
+      <div class="price-cuota">$115.350 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Estructura + bioestimulación en zonas complementarias. Para pacientes que buscan resultados naturales y progresivos. El 'no se ve que me hice algo pero me veo mejor' se logra con este combo.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Quiero algo natural.' → Exactamente para eso es este plan. Sin volumen exagerado, solo estructura y densidad — la diferencia que nota la paciente, no los demás.</div>
+  </div>
+</div>
+</div>
+<div class="group-header" style="background:#7B1FA2;border-left:6px solid #F3E5F5">Planes de 3 Servicios</div>
+<div class="grid">
+<div class="card" data-grp="3svc">
+  <div class="card-header" style="border-left:5px solid #7B1FA2">
+    <div class="card-title">Labios + Proyección Mentón + Toxina</div>
+    <div class="lista-price">Precio lista: $1.192.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Aumento de Labios</span><span class="trat-price">$383.000</span></div><div class="trat-row"><span class="trat-name">Proyección Mentón 1 vial</span><span class="trat-price">$399.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$834.400</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.072.800</div>
+      <div class="price-cuota">$178.800 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Armonización completa del tercio inferior en una visita. Argumento de tiempo: la paciente evita tres consultas separadas, tres recuperaciones, tres coordi­naciones. Una sola sesión, resultado integral.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Son demasiadas cosas.' → Todo en una sesión de 60 min. Separados serían $1.192.000 + 3 turnos + 3 tiempos de recuperación. El plan ahorra tiempo y dinero al mismo tiempo.</div>
+  </div>
+</div>
+<div class="card" data-grp="3svc">
+  <div class="card-header" style="border-left:5px solid #7B1FA2">
+    <div class="card-title">Labios + Proyección Mentón + Ojeras</div>
+    <div class="lista-price">Precio lista: $1.203.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Aumento de Labios</span><span class="trat-price">$383.000</span></div><div class="trat-row"><span class="trat-name">Proyección Mentón 1 vial</span><span class="trat-price">$399.000</span></div><div class="trat-row"><span class="trat-name">Relleno Ojeras</span><span class="trat-price">$421.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$842.100</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.082.700</div>
+      <div class="price-cuota">$180.450 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Sin toxina, orientado a pacientes que prefieren empezar sin neuromoduladores. Relleno integral: parte superior e inferior del rostro en equilibrio. Muy visual, resultado inmediato.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'No quiero toxina.' → Perfecto, este plan no la incluye. Son tres zonas de relleno que se complementan — el antes/después es de los más impactantes que tenemos.</div>
+  </div>
+</div>
+<div class="card" data-grp="3svc">
+  <div class="card-header" style="border-left:5px solid #7B1FA2">
+    <div class="card-title">Sculptra + Toxina + Labios</div>
+    <div class="lista-price">Precio lista: $1.563.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Sculptra 1 vial</span><span class="trat-price">$770.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div><div class="trat-row"><span class="trat-name">Aumento de Labios</span><span class="trat-price">$383.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$1.094.100</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.406.700</div>
+      <div class="price-cuota">$234.450 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Plan premium con resultado en tres dimensiones: estructura (Sculptra), expresión (toxina) y volumen (labios). Para pacientes de alto valor que ya conocen la clínica.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Y si hago solo el Sculptra?' → Sculptra solo cuesta $770.000. Por $793.000 más tenés también toxina y labios. El resultado es incomparable — y salen juntos en la misma sesión.</div>
+  </div>
+</div>
+<div class="card" data-grp="3svc">
+  <div class="card-header" style="border-left:5px solid #7B1FA2">
+    <div class="card-title">Profhilo + Sculptra + Toxina</div>
+    <div class="lista-price">Precio lista: $1.770.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Profhilo</span><span class="trat-price">$590.000</span></div><div class="trat-row"><span class="trat-name">Sculptra 1 vial</span><span class="trat-price">$770.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$1.239.000</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.593.000</div>
+      <div class="price-cuota">$265.500 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">El plan más completo de bioestimulación avanzada. Tres mecanismos de acción distintos en una sesión. Para pacientes que vienen con objetivos claros de rejuvenecimiento total.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Es mucho dinero de una vez.' → 6 cuotas de $265.500 por mes. Y el resultado equivale a lo que costaría un procedimiento quirúrgico — sin tiempo de recuperación.</div>
+  </div>
+</div>
+<div class="card" data-grp="3svc">
+  <div class="card-header" style="border-left:5px solid #7B1FA2">
+    <div class="card-title">HArmonyCA + Labios + Proyección Mentón</div>
+    <div class="lista-price">Precio lista: $1.152.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">HArmonyCA 1 vial</span><span class="trat-price">$370.000</span></div><div class="trat-row"><span class="trat-name">Aumento de Labios</span><span class="trat-price">$383.000</span></div><div class="trat-row"><span class="trat-name">Proyección Mentón 1 vial</span><span class="trat-price">$399.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$806.400</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.036.800</div>
+      <div class="price-cuota">$172.800 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Bioestimulación + volumen + estructura. El combo equilibrado para quien busca resultados naturales con profundidad. HArmonyCA actúa sobre la piel mientras los fillers trabajan la forma.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Quiero algo que no se note exagerado.' → HArmonyCA genera un efecto glow y densidad que potencia el filler de forma sutil. El resultado se ve, no se adivina.</div>
+  </div>
+</div>
+</div>
+<div class="group-header" style="background:#00838F;border-left:6px solid #E0F7FA">Planes con Tecnología</div>
+<div class="grid">
+<div class="card" data-grp="co2">
+  <div class="card-header" style="border-left:5px solid #00838F">
+    <div class="card-title">CO2 Facial + NCTF</div>
+    <div class="lista-price">Precio lista: $672.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">CO2 Cool Peel DEKA Facial 1 (no es Resurfacing)</span><span class="trat-price">$393.000</span></div><div class="trat-row"><span class="trat-name">NCTF 135 HA Facial</span><span class="trat-price">$279.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$470.400</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$604.800</div>
+      <div class="price-cuota">$100.800 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">CO2 renueva la superficie (exfolia y estimula colágeno), NCTF nutre y revitaliza desde la dermis. Resultado: piel nueva desde adentro y afuera. Clave para pre-evento o post-verano.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Cuántos días de recuperación?' → El Cool Peel tiene 2-3 días de rojez leve. Acá lo potenciás con NCTF para acortar eso — la hidratación profunda acelera la recuperación.</div>
+  </div>
+</div>
+<div class="card" data-grp="co2">
+  <div class="card-header" style="border-left:5px solid #00838F">
+    <div class="card-title">CO2 + NCTF + Toxina</div>
+    <div class="lista-price">Precio lista: $1.082.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">CO2 Cool Peel DEKA Facial 1 (no es Resurfacing)</span><span class="trat-price">$393.000</span></div><div class="trat-row"><span class="trat-name">NCTF 135 HA Facial</span><span class="trat-price">$279.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$757.400</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$973.800</div>
+      <div class="price-cuota">$162.300 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">El trío de rejuvenecimiento completo. Muchas pacientes que vienen por el CO2 no saben que pueden agregar NCTF y toxina. Preguntarles sus objetivos abre la puerta a este plan.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'No sabía que se podía combinar.' → Se puede y el resultado es muy superior. El CO2 prepara la piel, el NCTF la nutre, la toxina congela el resultado. Todo en una visita.</div>
+  </div>
+</div>
+<div class="card" data-grp="co2">
+  <div class="card-header" style="border-left:5px solid #00838F">
+    <div class="card-title">Sculptra + Toxina + Skinvive</div>
+    <div class="lista-price">Precio lista: $1.408.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Sculptra 1 vial</span><span class="trat-price">$770.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div><div class="trat-row"><span class="trat-name">Skinvive 1 vial</span><span class="trat-price">$228.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$985.600</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.267.200</div>
+      <div class="price-cuota">$211.200 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Volumen + relajación + hidratación intensa. Skinvive es el 'acabado final': una luminosidad profunda que potencia los resultados de los otros dos. Es fácil de vender visualmente.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Para qué sirve el Skinvive?' → Es el brillo y la tersura que todos notarán aunque no sepan exactamente qué cambiaste. Es lo que hace que el resultado se vea 'fresco' y natural.</div>
+  </div>
+</div>
+<div class="card" data-grp="co2">
+  <div class="card-header" style="border-left:5px solid #00838F">
+    <div class="card-title">Profhilo + Toxina + CO2</div>
+    <div class="lista-price">Precio lista: $1.393.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Profhilo</span><span class="trat-price">$590.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div><div class="trat-row"><span class="trat-name">CO2 Cool Peel DEKA Facial 1 (no es Resurfacing)</span><span class="trat-price">$393.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$975.100</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.253.700</div>
+      <div class="price-cuota">$208.950 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Máximo efecto antiage en tres dimensiones: hidratación profunda, relajación muscular y renovación superficial. Para pacientes con presupuesto y objetivos claros de rejuvenecimiento total.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Por dónde empiezo si nunca hice nada?' → Este plan es ideal porque cada componente trabaja una capa distinta. El resultado es progresivo y natural — no se ve 'operada'.</div>
+  </div>
+</div>
+</div>
+<div class="group-header" style="background:#2E7D32;border-left:6px solid #E8F5E9">Nuevos Planes — Incorporados 26/06</div>
+<div class="grid">
+<div class="card" data-grp="new">
+  <div class="card-header" style="border-left:5px solid #2E7D32">
+    <div class="card-title">Combo Bótox x3 ★<span class="badge-star">★ PRECIO ESPECIAL</span></div>
+    <div class="lista-price">Precio lista: $1.230.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior × 3 sesiones</span><span class="trat-price">$1.230.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$861.000</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$1.107.000</div>
+      <div class="price-cuota">$184.500 × 6 cuotas</div>
+    </div>
+    <div class="price-row t20">
+          <div class="price-label">TARJETA −20%</div>
+          <div class="price-value">$984.000</div>
+          <div class="price-cuota">$164.000 × 6 cuotas</div>
+        </div>
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">ARGUMENTO DE PESO: asegurar el precio de hoy ante la inflación. Pagar 3 sesiones ahora protege contra aumentos futuros. Además, la continuidad del tratamiento mejora significativamente la duración.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Por qué pagar 3 ahora?' → En 6 meses este precio no va a existir. Y quien hace el ciclo completo de 3 sesiones reporta resultados que duran el doble que quien hace sesiones sueltas.</div>
+  </div>
+</div>
+<div class="card" data-grp="new">
+  <div class="card-header" style="border-left:5px solid #2E7D32">
+    <div class="card-title">Ojeras + Bótox + Peeling x4</div>
+    <div class="lista-price">Precio lista: $1.063.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Relleno Ojeras</span><span class="trat-price">$421.000</span></div><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div><div class="trat-row"><span class="trat-name">Peeling Facial × 4 sesiones</span><span class="trat-price">$232.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$744.100</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$956.700</div>
+      <div class="price-cuota">$159.450 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Combo de alta retención: cuatro sesiones de peeling aseguran 4 visitas futuras. El peeling mantiene la textura que hace lucir mejor el relleno. Un plan que fideliza a la paciente automáticamente.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Son muchas sesiones.' → Al contrario — son 4 visitas ya comprometidas a un precio bloqueado. Los 4 peelings solos valen $232.000. Acá los llevás incluidos en el plan.</div>
+  </div>
+</div>
+<div class="card" data-grp="new">
+  <div class="card-header" style="border-left:5px solid #2E7D32">
+    <div class="card-title">Laser CO2 Cool Peel + Profhilo</div>
+    <div class="lista-price">Precio lista: $983.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">CO2 Cool Peel DEKA Facial 1 (no es Resurfacing)</span><span class="trat-price">$393.000</span></div><div class="trat-row"><span class="trat-name">Profhilo</span><span class="trat-price">$590.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$688.100</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$884.700</div>
+      <div class="price-cuota">$147.450 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Renovación + hidratación profunda en una sola sesión. Ideal post-verano (piel dañada por el sol) o pre-evento importante. El CO2 abre los canales, el Profhilo penetra más profundo.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Se puede hacer todo junto?' → Sí, y es la forma óptima. El CO2 mejora la absorción del Profhilo — el resultado es superior al de hacerlos separados con semanas de diferencia.</div>
+  </div>
+</div>
+<div class="card" data-grp="new">
+  <div class="card-header" style="border-left:5px solid #2E7D32">
+    <div class="card-title">Limpieza Profunda + Peeling x3</div>
+    <div class="lista-price">Precio lista: $247.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Limpieza Facial Profunda</span><span class="trat-price">$73.000</span></div><div class="trat-row"><span class="trat-name">Peeling Facial × 3 sesiones</span><span class="trat-price">$174.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$172.900</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$222.300</div>
+      <div class="price-cuota">$37.050 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">El plan de entrada ideal. Ticket accesible, genera 4 visitas comprometidas. Presentarlo como 'ritual mensual de piel' — es el primer paso para pacientes que no conocen la clínica o vienen por primera vez.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'Solo quiero una limpieza.' → Podés hacer solo eso, pero el peeling entre sesiones mantiene el resultado. Es la diferencia entre una piel limpia por una semana y una piel transformada.</div>
+  </div>
+</div>
+<div class="card" data-grp="new">
+  <div class="card-header" style="border-left:5px solid #2E7D32">
+    <div class="card-title">Limpieza Deluxe + Peeling x3</div>
+    <div class="lista-price">Precio lista: $271.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Limpieza Facial Deluxe</span><span class="trat-price">$97.000</span></div><div class="trat-row"><span class="trat-name">Peeling Facial × 3 sesiones</span><span class="trat-price">$174.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$189.700</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$243.900</div>
+      <div class="price-cuota">$40.650 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">La versión premium del plan de mantenimiento. Presentarla como 'ritual mensual de piel de alta performance'. Para pacientes que hacen otros tratamientos y quieren mantener la base de la piel perfecta.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Qué diferencia tiene con la Profunda?' → La Deluxe incluye extracción más profunda, masaje, y tratamientos complementarios. Para pieles que trabajan con activos o post-filler, es la correcta.</div>
+  </div>
+</div>
+<div class="card" data-grp="new">
+  <div class="card-header" style="border-left:5px solid #2E7D32">
+    <div class="card-title">Toxina Botulínica + Skin Booster</div>
+    <div class="lista-price">Precio lista: $743.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Toxina Botulínica Tercio Superior</span><span class="trat-price">$410.000</span></div><div class="trat-row"><span class="trat-name">Skin Booster promedio (Skinvive / Elhya / Viscoderm)</span><span class="trat-price">$333.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$520.100</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$668.700</div>
+      <div class="price-cuota">$111.450 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">La toxina relaja las arrugas de expresión, el Skin Booster hidrata desde adentro y genera el 'glow' que todos notan. Es el combo de primer tratamiento antiage: resultados visibles rápido, sin cambios dramáticos.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Para qué sirve el Skin Booster?' → Es lo que hace que la piel se vea 'descansada y luminosa' — no es el típico relleno. La paciente se lo nota desde el espejo, sin que los demás sepan qué se hizo.</div>
+  </div>
+</div>
+<div class="card" data-grp="new">
+  <div class="card-header" style="border-left:5px solid #2E7D32">
+    <div class="card-title">R10 (Radiesse) + NCTF</div>
+    <div class="lista-price">Precio lista: $748.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">Radiesse</span><span class="trat-price">$469.000</span></div><div class="trat-row"><span class="trat-name">NCTF 135 HA Facial</span><span class="trat-price">$279.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$523.600</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$673.200</div>
+      <div class="price-cuota">$112.200 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">Radiesse estimula colágeno propio y da estructura; NCTF revitaliza y nutre la dermis con 59 activos. Para pieles con pérdida de firmeza y opacidad — el combo trabaja profundidad y vitalidad.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Por qué Radiesse y no ácido hialurónico solo?' → Radiesse hace colágeno propio que dura más de un año. NCTF trabaja la textura que ningún filler logra. Son mecanismos completamente distintos.</div>
+  </div>
+</div>
+</div>
+<div class="group-header" style="background:#00838F;border-left:6px solid #E0F7FA">Planes con Tecnología</div>
+<div class="grid">
+<div class="card" data-grp="co2">
+  <div class="card-header" style="border-left:5px solid #00838F">
+    <div class="card-title">Cool Peel + Plasma Rico</div>
+    <div class="lista-price">Precio lista: $600.000</div>
+  </div>
+  <div class="trats-block"><div class="trat-row"><span class="trat-name">CO2 Cool Peel DEKA Facial 1 (no es Resurfacing)</span><span class="trat-price">$393.000</span></div><div class="trat-row"><span class="trat-name">Plasma Rico Facial</span><span class="trat-price">$207.000</span></div></div>
+  <div class="prices-block">
+    <div class="price-row efectivo">
+      <div class="price-label">EFECTIVO −30%</div>
+      <div class="price-value">$420.000</div>
+    </div>
+    <div class="price-row tarjeta">
+      <div class="price-label">TARJETA −10%</div>
+      <div class="price-value">$540.000</div>
+      <div class="price-cuota">$90.000 × 6 cuotas</div>
+    </div>
+    
+  </div>
+  <div class="tip-block">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text">El Cool Peel renueva la superficie con mínimo downtime (2-3 días de rojez leve). El Plasma Rico amplifica la regeneración usando los propios factores de crecimiento de la paciente. Juntos, el resultado es más profundo y más rápido que cualquiera de los dos solos.</div>
+  </div>
+  <div class="obj-block">
+    <div class="obj-label">🎯 OBJECIÓN FRECUENTE</div>
+    <div class="obj-text">'¿Duele? ¿Cuántos días de recuperación?' → El Cool Peel no es el CO2 fuerte de ablación total. 2-3 días de rojez leve — el viernes se lo hacés y el lunes va al trabajo. Con el Plasma Rico encima, la recuperación es todavía más suave.</div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<footer class="site-footer">
+  BeautyDerm · Beauty Plans — Documento interno para equipo de recepción y ventas · 27 planes activos
+</footer>
+
+<script>
+function hidePitch() {
+  document.getElementById('pitch-section').style.display = 'none';
+  document.getElementById('search-bar-wrap').style.display = '';
+  document.querySelectorAll('.group-header, .grid').forEach(e => e.style.display = '');
+}
+function showPitch(el) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('pitch-section').style.display = 'block';
+  document.getElementById('search-bar-wrap').style.display = 'none';
+  document.querySelectorAll('.group-header, .grid').forEach(e => e.style.display = 'none');
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('hidden'));
+}
+function filterGrp(grp, el) {
+  hidePitch();
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.card').forEach(c => {
+    c.classList.toggle('hidden', c.dataset.grp !== grp);
+  });
+  document.querySelectorAll('.group-header').forEach(gh => {
+    const next = gh.nextElementSibling;
+    if(next && next.classList.contains('grid')) {
+      const visible = [...next.querySelectorAll('.card')].some(c => !c.classList.contains('hidden'));
+      gh.style.display = visible ? '' : 'none';
+      next.style.display = visible ? '' : 'none';
+    }
+  });
+  document.getElementById('searchInput').value = '';
+}
+function filterAll(el) {
+  hidePitch();
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('hidden'));
+  document.getElementById('searchInput').value = '';
+}
+function searchCards(q) {
+  hidePitch();
+  q = q.toLowerCase();
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  document.querySelector('.pill').classList.add('active');
+  document.querySelectorAll('.card').forEach(c => {
+    const txt = c.textContent.toLowerCase();
+    c.classList.toggle('hidden', q.length > 1 && !txt.includes(q));
+  });
+  document.querySelectorAll('.group-header').forEach(gh => {
+    const next = gh.nextElementSibling;
+    if(next && next.classList.contains('grid')) {
+      const visible = [...next.querySelectorAll('.card')].some(c => !c.classList.contains('hidden'));
+      gh.style.display = visible ? '' : 'none';
+      next.style.display = visible ? '' : 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>
